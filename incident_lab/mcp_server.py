@@ -6,7 +6,16 @@ from mcp.server.fastmcp import FastMCP
 
 from .simulator import read_tool
 
-mcp = FastMCP("Incident Lab observations")
+
+class ScopedMCP(FastMCP):
+    async def call_tool(self, name, arguments):
+        allowed = {"query"} if name == "search_runbooks" else set()
+        if not isinstance(arguments, dict) or set(arguments) - allowed:
+            raise ValueError("Unknown or cross-run tool arguments rejected")
+        return await super().call_tool(name, arguments)
+
+
+mcp = ScopedMCP("Incident Lab observations")
 RUN = os.environ["INCIDENT_RUN_ID"]
 DB = os.environ["INCIDENT_DB"]
 

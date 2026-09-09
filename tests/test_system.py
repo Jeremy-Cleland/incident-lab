@@ -83,6 +83,8 @@ async def test_actual_mcp_is_scoped_and_read_only(db):
         assert "supports" not in json.dumps(result)
         assert result["items"][0]["id"] == "log-001"
         assert (await client.call_tool("execute_shell", {"command": "whoami"})).isError
+        assert (await client.call_tool("query_logs", {"run_id": "other"})).isError
+        assert (await client.call_tool("query_metrics", {"query": "extra"})).isError
 
 
 async def test_unavailable_provider_fails_explicitly(db):
