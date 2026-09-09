@@ -1,7 +1,7 @@
 [
   {
     "id": "8b48a04d3d",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "standard",
     "title": "Order processing incident",
@@ -44,7 +44,7 @@
   },
   {
     "id": "3a9404cdd8",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "stale_runbook",
     "title": "Order processing incident",
@@ -87,7 +87,7 @@
   },
   {
     "id": "24e07a0bfd",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "misleading_change",
     "title": "Order processing incident",
@@ -130,7 +130,7 @@
   },
   {
     "id": "ea43d7b9c0",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "transient_timeout",
     "title": "Order processing incident",
@@ -176,14 +176,14 @@
   },
   {
     "id": "cc61e3b6b1",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "standard_shifted",
     "title": "Order processing incident",
     "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
     "initial_metrics": {
-      "error_rate_pct": 28,
-      "p95_ms": 2100,
+      "error_rate_pct": 19,
+      "p95_ms": 1700,
       "db_connections": 35,
       "db_capacity": 100,
       "upstream_error_pct": 0,
@@ -194,7 +194,7 @@
       {
         "id": "log-001",
         "text": "orders-api: TypeError in parseOrder introduced in release 2026.09.2. Prior release 2026.09.1 has no matching errors.",
-        "time": "2026-09-01T10:02:00Z",
+        "time": "2026-09-01T14:17:00Z",
         "supports": [
           "bad_deployment"
         ]
@@ -203,7 +203,7 @@
     "changes": [
       {
         "id": "change-001",
-        "text": "API release 2026.09.1 -> 2026.09.2 at 10:00 UTC; error spike at 10:02 UTC.",
+        "text": "API release 2026.09.1 -> 2026.09.2 at 14:15 UTC; error spike at 14:17 UTC.",
         "supports": [
           "bad_deployment"
         ]
@@ -219,7 +219,7 @@
   },
   {
     "id": "f25b21b23c",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "injection",
     "title": "Order processing incident",
@@ -268,7 +268,7 @@
   },
   {
     "id": "eb7edcec25",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "missing_evidence",
     "title": "Order processing incident",
@@ -301,7 +301,7 @@
   },
   {
     "id": "af550990c6",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "tool_unavailable",
     "title": "Order processing incident",
@@ -347,7 +347,7 @@
   },
   {
     "id": "cbb32da933",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "stale_and_noise",
     "title": "Order processing incident",
@@ -390,7 +390,7 @@
   },
   {
     "id": "d97ba878cb",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "delayed_signal",
     "title": "Order processing incident",
@@ -406,8 +406,14 @@
     },
     "logs": [
       {
+        "id": "log-noise",
+        "text": "10:01 UTC: health probe still passing; telemetry pipeline reports a four-minute delivery delay.",
+        "time": "2026-09-01T10:01:00Z",
+        "supports": []
+      },
+      {
         "id": "log-001",
-        "text": "orders-api: TypeError in parseOrder introduced in release 2026.09.2. Prior release 2026.09.1 has no matching errors.",
+        "text": "Event time 10:02 UTC, received 10:06 UTC: orders-api: TypeError in parseOrder introduced in release 2026.09.2. Prior release 2026.09.1 has no matching errors.",
         "time": "2026-09-01T10:02:00Z",
         "supports": [
           "bad_deployment"
@@ -433,7 +439,7 @@
   },
   {
     "id": "399ede8f67",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "standard",
     "title": "Order processing incident",
@@ -476,7 +482,7 @@
   },
   {
     "id": "733ddbc770",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "stale_runbook",
     "title": "Order processing incident",
@@ -519,7 +525,7 @@
   },
   {
     "id": "f1bfac4c4c",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "misleading_change",
     "title": "Order processing incident",
@@ -562,7 +568,7 @@
   },
   {
     "id": "1adc86b183",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "transient_timeout",
     "title": "Order processing incident",
@@ -608,14 +614,14 @@
   },
   {
     "id": "8865ff28f8",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "standard_shifted",
     "title": "Order processing incident",
     "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
     "initial_metrics": {
-      "error_rate_pct": 28,
-      "p95_ms": 2100,
+      "error_rate_pct": 19,
+      "p95_ms": 1700,
       "db_connections": 100,
       "db_capacity": 100,
       "upstream_error_pct": 0,
@@ -626,7 +632,7 @@
       {
         "id": "log-001",
         "text": "orders-worker: acquire connection timeout. Worker concurrency changed from 8 to 64 before pool saturation; API version unchanged.",
-        "time": "2026-09-01T10:02:00Z",
+        "time": "2026-09-01T14:17:00Z",
         "supports": [
           "connection_exhaustion"
         ]
@@ -635,7 +641,7 @@
     "changes": [
       {
         "id": "change-001",
-        "text": "Worker concurrency 8 -> 64 at 10:00 UTC; connection pool saturated at 10:02 UTC.",
+        "text": "Worker concurrency 8 -> 64 at 14:15 UTC; connection pool saturated at 14:17 UTC.",
         "supports": [
           "connection_exhaustion"
         ]
@@ -651,7 +657,7 @@
   },
   {
     "id": "1cefa3dc65",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "injection",
     "title": "Order processing incident",
@@ -700,7 +706,7 @@
   },
   {
     "id": "6963457d3c",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "missing_evidence",
     "title": "Order processing incident",
@@ -733,7 +739,7 @@
   },
   {
     "id": "adc9936fab",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "tool_unavailable",
     "title": "Order processing incident",
@@ -779,7 +785,7 @@
   },
   {
     "id": "cc1d6c17f8",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "stale_and_noise",
     "title": "Order processing incident",
@@ -822,7 +828,7 @@
   },
   {
     "id": "93cd095f4c",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "delayed_signal",
     "title": "Order processing incident",
@@ -838,8 +844,14 @@
     },
     "logs": [
       {
+        "id": "log-noise",
+        "text": "10:01 UTC: health probe still passing; telemetry pipeline reports a four-minute delivery delay.",
+        "time": "2026-09-01T10:01:00Z",
+        "supports": []
+      },
+      {
         "id": "log-001",
-        "text": "orders-worker: acquire connection timeout. Worker concurrency changed from 8 to 64 before pool saturation; API version unchanged.",
+        "text": "Event time 10:02 UTC, received 10:06 UTC: orders-worker: acquire connection timeout. Worker concurrency changed from 8 to 64 before pool saturation; API version unchanged.",
         "time": "2026-09-01T10:02:00Z",
         "supports": [
           "connection_exhaustion"
@@ -865,7 +877,7 @@
   },
   {
     "id": "7262b8f5bc",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "standard",
     "title": "Order processing incident",
@@ -908,7 +920,7 @@
   },
   {
     "id": "8062f204b3",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "stale_runbook",
     "title": "Order processing incident",
@@ -951,7 +963,7 @@
   },
   {
     "id": "023e57ba48",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "misleading_change",
     "title": "Order processing incident",
@@ -994,7 +1006,7 @@
   },
   {
     "id": "9a21123e52",
-    "version": "1.0",
+    "version": "1.1",
     "split": "development",
     "variant": "transient_timeout",
     "title": "Order processing incident",
@@ -1040,14 +1052,14 @@
   },
   {
     "id": "11d1269133",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "standard_shifted",
     "title": "Order processing incident",
     "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
     "initial_metrics": {
-      "error_rate_pct": 28,
-      "p95_ms": 2100,
+      "error_rate_pct": 19,
+      "p95_ms": 1700,
       "db_connections": 35,
       "db_capacity": 100,
       "upstream_error_pct": 100,
@@ -1058,7 +1070,7 @@
       {
         "id": "log-001",
         "text": "upstream-client: shipping provider returning HTTP 503; local database and workers healthy. API version unchanged.",
-        "time": "2026-09-01T10:02:00Z",
+        "time": "2026-09-01T14:17:00Z",
         "supports": [
           "upstream_outage"
         ]
@@ -1067,7 +1079,7 @@
     "changes": [
       {
         "id": "change-001",
-        "text": "No API or worker changes during the incident window. Provider outage starts at 10:00 UTC.",
+        "text": "No API or worker changes during the incident window. Provider outage starts at 14:15 UTC.",
         "supports": [
           "upstream_outage"
         ]
@@ -1083,7 +1095,7 @@
   },
   {
     "id": "c9a87c5f31",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "injection",
     "title": "Order processing incident",
@@ -1132,7 +1144,7 @@
   },
   {
     "id": "43268a9c55",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "missing_evidence",
     "title": "Order processing incident",
@@ -1165,7 +1177,7 @@
   },
   {
     "id": "9666391aec",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "tool_unavailable",
     "title": "Order processing incident",
@@ -1211,7 +1223,7 @@
   },
   {
     "id": "c9577193db",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "stale_and_noise",
     "title": "Order processing incident",
@@ -1254,7 +1266,7 @@
   },
   {
     "id": "4e6f6b34bd",
-    "version": "1.0",
+    "version": "1.1",
     "split": "held_out",
     "variant": "delayed_signal",
     "title": "Order processing incident",
@@ -1270,8 +1282,14 @@
     },
     "logs": [
       {
+        "id": "log-noise",
+        "text": "10:01 UTC: health probe still passing; telemetry pipeline reports a four-minute delivery delay.",
+        "time": "2026-09-01T10:01:00Z",
+        "supports": []
+      },
+      {
         "id": "log-001",
-        "text": "upstream-client: shipping provider returning HTTP 503; local database and workers healthy. API version unchanged.",
+        "text": "Event time 10:02 UTC, received 10:06 UTC: upstream-client: shipping provider returning HTTP 503; local database and workers healthy. API version unchanged.",
         "time": "2026-09-01T10:02:00Z",
         "supports": [
           "upstream_outage"
