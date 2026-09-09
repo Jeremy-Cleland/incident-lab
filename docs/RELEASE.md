@@ -17,3 +17,9 @@ Acceptance: 18 Python tests; TypeScript/Vite build; Ruff; Git diff checks; actua
 The portfolio integration is in commit `9177228b845cb658ce56701d13ed54882057eb95` on `codex/portfolio-redesign`, PR https://github.com/Jeremy-Cleland/jeremycleland.com/pull/5. The existing portfolio production release is not merged; the user's earlier release plan requires preview review first.
 
 To reproduce a static deployment, run `npm ci --prefix web`, `npm run build --prefix web`, then deploy `web/dist` to the separate Incident Lab site. Never deploy the Python API or expose the Ollama port publicly. Netlify's automatically enabled branding injection was disabled to preserve the application CSP.
+
+## Portfolio preview acceptance
+
+The Netlify deploy preview `6aa1bd2b48d9870008c57c3a` is ready for commit `9177228b845cb658ce56701d13ed54882057eb95`: https://deploy-preview-5--jeremycleland.netlify.app/portfolio/incident-lab.
+
+The separate portfolio Performance Testing check remains failing on the homepage: LCP 3.5 seconds versus its 2.5-second threshold (run 34399423346). The preceding redesign commit also failed the same check at 3.8 seconds (run 34393156567). The Incident Lab application CI passes; this existing portfolio gate and requested preview review remain before merging that redesign. No performance threshold was relaxed.
