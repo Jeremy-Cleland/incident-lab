@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.sqlite*
+.env*
+!.env.example
+node_modules/
+web/dist/
+.netlify/
+.playwright-cli/
+output/

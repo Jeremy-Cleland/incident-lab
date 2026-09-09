@@ -1,0 +1,7 @@
+{
+  "version": "1.0",
+  "sha256": "dabdd2db5d1e433f1e48a459ffe68be931a0d7aeebb921bfa4658c448ae539fe",
+  "development": 12,
+  "held_out": 18,
+  "policy": "Frozen before prompt tuning; full case labels are evaluator-only and never passed to model or MCP tools."
+}
