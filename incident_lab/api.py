@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from . import store
 from .agent import investigate, verify
@@ -44,6 +45,7 @@ async def lifespan(app):
 
 
 app = FastAPI(title="Incident Lab local API", lifespan=lifespan)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1", "[::1]", "testserver"])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -58,6 +60,9 @@ async def local_only(request: Request, call_next):
 
     if request.client and request.client.host not in ["127.0.0.1", "::1", "testclient"]:
         return JSONResponse({"detail": "Local-only API"}, status_code=403)
+    origin = request.headers.get("origin")
+    if origin and origin not in {"http://localhost:5173", "http://127.0.0.1:5173"}:
+        return JSONResponse({"detail": "Untrusted origin"}, status_code=403)
     return await call_next(request)
 
 

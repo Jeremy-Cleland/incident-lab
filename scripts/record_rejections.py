@@ -3,6 +3,7 @@
 import asyncio
 import json
 import platform
+import subprocess
 
 from incident_lab import store
 from incident_lab.agent import investigate
@@ -19,6 +20,12 @@ async def main():
     metadata.update(
         mode="agent",
         hardware=platform.platform(),
+        hardware_model=subprocess.check_output(["sysctl", "-n", "hw.model"], text=True).strip()
+        if platform.system() == "Darwin"
+        else platform.machine(),
+        memory_bytes=int(subprocess.check_output(["sysctl", "-n", "hw.memsize"], text=True))
+        if platform.system() == "Darwin"
+        else None,
         scenario_version=manifest["version"],
         scenario_sha256=manifest["sha256"],
     )

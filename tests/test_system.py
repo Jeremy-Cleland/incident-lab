@@ -300,3 +300,37 @@ async def test_end_to_end_with_actual_mcp(db):
     run = store.get(rid, db)
     assert run["state"] == "completed" and run["executions"] == 1
     assert run["events"][-2]["payload"]["observed_status"] == "healthy"
+
+
+def test_local_api_rejects_foreign_origin_and_host(db, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from incident_lab import api
+
+    monkeypatch.setattr(api, "DB", db)
+    with TestClient(api.app) as client:
+        assert client.get("/api/health", headers={"Origin": "https://attacker.invalid"}).status_code == 403
+        assert client.get("/api/health", headers={"Host": "attacker.invalid"}).status_code == 400
+        assert client.get("/api/health", headers={"Origin": "http://127.0.0.1:5173"}).status_code == 200
+
+
+def test_wrong_action_does_not_recover(db):
+    rid = store.create(store.cases()[0]["id"], path=db)
+    store.transition(rid, "investigating", path=db)
+    with store.transaction(db) as c:
+        store.emit(
+            c, rid, "tool_result", {"name": "query_logs", "result": read_tool(rid, "query_logs", {}, db)}
+        )
+    p = {
+        "diagnosis": "connection_exhaustion",
+        "action": "restore_worker_concurrency",
+        "target": "orders-worker",
+        "summary": "Deliberately wrong hypothesis for test",
+        "evidence_ids": ["log-001"],
+        "uncertainty": "Wrong action test",
+        "expected_effect": "Recovery",
+    }
+    pid = propose(rid, p, db)
+    approve(rid, {"proposal_id": pid, "revision": 0, "decision": "approve"}, db)
+    health = read_tool(rid, "get_service_health", {}, db)
+    assert health["status"] == "unhealthy" and health["metrics"]["error_rate_pct"] == 28
