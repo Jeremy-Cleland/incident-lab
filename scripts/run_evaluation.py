@@ -47,7 +47,13 @@ async def main():
     )
     report_path = root / "artifacts" / f"{args.split}-{'baseline' if args.baseline else 'agent'}.json"
     report_path.parent.mkdir(exist_ok=True)
-    report = {"metadata": metadata, "results": [], "complete": False, "repeats": args.repeats}
+    report = {
+        "metadata": metadata,
+        "results": [],
+        "complete": False,
+        "grader_version": "1.1",
+        "repeats": args.repeats,
+    }
     selected = [c for c in store.cases() if c["split"] == args.split][: args.limit]
     for repeat in range(args.repeats):
         for fixture in selected:

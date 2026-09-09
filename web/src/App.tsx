@@ -74,6 +74,7 @@ export default function App() {
     if (!item) return;
     let active = true;
     setPlaying(false);
+    setRun(null);
     setCursor(0);
     setEvidence(null);
     fetch(item.file)
@@ -127,6 +128,44 @@ export default function App() {
   const rows = events.filter(
     (e) => !["model_result", "phase_finished"].includes(e.type),
   );
+  function watchRun(id: string) {
+    stream.current?.close();
+    const s = new EventSource(API + `/api/runs/${id}/events`);
+    stream.current = s;
+    s.addEventListener("trace", () =>
+      fetch(API + `/api/runs/${id}`)
+        .then((r) => r.json())
+        .then((updated) => {
+          setRun((previous) =>
+            !previous ||
+            previous.id !== updated.id ||
+            (updated.events.at(-1)?.seq || 0) >=
+              (previous.events.at(-1)?.seq || 0)
+              ? updated
+              : previous,
+          );
+          if (
+            [
+              "completed",
+              "inconclusive",
+              "failed",
+              "cancelled",
+              "rejected",
+            ].includes(updated.state)
+          )
+            s.close();
+        })
+        .catch(() =>
+          setError(
+            "Unable to refresh run state. The event stream will reconnect.",
+          ),
+        ),
+    );
+    s.onerror = () =>
+      setError(
+        "Connection interrupted. The event stream will retry; your run remains stored locally.",
+      );
+  }
   async function liveStart(caseId: string) {
     setBusy(true);
     setError("");
@@ -140,42 +179,8 @@ export default function App() {
       if (!r.ok) throw Error(d.detail);
       setRun(d);
       setCursor(0);
-      stream.current?.close();
-      const s = new EventSource(API + `/api/runs/${d.id}/events`);
-      stream.current = s;
-      s.addEventListener("trace", () =>
-        fetch(API + `/api/runs/${d.id}`)
-          .then((r) => r.json())
-          .then((updated) => {
-            setRun((previous) =>
-              !previous ||
-              previous.id !== updated.id ||
-              (updated.events.at(-1)?.seq || 0) >=
-                (previous.events.at(-1)?.seq || 0)
-                ? updated
-                : previous,
-            );
-            if (
-              [
-                "completed",
-                "inconclusive",
-                "failed",
-                "cancelled",
-                "rejected",
-              ].includes(updated.state)
-            )
-              s.close();
-          })
-          .catch(() =>
-            setError(
-              "Unable to refresh run state. The event stream will reconnect.",
-            ),
-          ),
-      );
-      s.onerror = () =>
-        setError(
-          "Connection interrupted. The event stream will retry; your run remains stored locally.",
-        );
+      localStorage.setItem("incident-last-run", d.id);
+      watchRun(d.id);
     } catch (e) {
       setError(String(e));
     } finally {
@@ -199,6 +204,15 @@ export default function App() {
       setScenarios(await (await fetch(API + "/api/scenarios")).json());
       setLive(true);
       setRun(null);
+      const previousId = localStorage.getItem("incident-last-run");
+      if (previousId) {
+        const response = await fetch(API + `/api/runs/${previousId}`);
+        if (response.ok) {
+          const previous = await response.json();
+          setRun(previous);
+          watchRun(previous.id);
+        } else localStorage.removeItem("incident-last-run");
+      }
     } catch (e) {
       setError("Start the local API first. " + String(e));
     }
@@ -345,7 +359,8 @@ export default function App() {
                   <select
                     id="recording"
                     onChange={(e) => liveStart(e.target.value)}
-                    disabled={busy}
+                    value={run?.case_id || ""}
+                    disabled={busy || Boolean(run && !finalEvent)}
                   >
                     <option value="">Select an incident…</option>
                     {scenarios.map((s, i) => (
@@ -413,7 +428,7 @@ export default function App() {
                 )}
               </div>
             </section>
-            <div className="workspace">
+            <div className="workspace" data-run-id={run?.id || ""}>
               <section className="timeline panel">
                 <div className="panel-heading">
                   <h2>Investigation timeline</h2>
@@ -502,7 +517,9 @@ export default function App() {
                   <div className="empty">
                     {live
                       ? "Choose a development incident to begin."
-                      : "Recordings will appear here when real evaluations finish."}
+                      : index?.recordings.length
+                        ? "Loading selected recording…"
+                        : "Recordings will appear here when real evaluations finish."}
                   </div>
                 )}
               </section>

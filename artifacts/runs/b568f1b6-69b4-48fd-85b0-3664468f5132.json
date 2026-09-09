@@ -1,0 +1,348 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+    "case_id": "9a21123e52",
+    "state": "inconclusive",
+    "revision": 0,
+    "proposal_id": "e6032121-735b-4c72-b80f-15494b6b6cb5",
+    "proposal": {
+      "diagnosis": "insufficient_evidence",
+      "action": "none",
+      "target": "none",
+      "summary": "Unable to retrieve metrics, logs, or service health data for order-processing errors. Tools are unavailable or returning errors.",
+      "evidence_ids": [],
+      "uncertainty": "Critical data sources are inaccessible, preventing a definitive diagnosis.",
+      "expected_effect": "No action taken due to lack of evidence."
+    },
+    "outcome": null,
+    "executions": 0,
+    "created_at": "2026-09-09T19:46:59.222751+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "source_commit": "732941b4865023eeda1d98de0d8123dd3b0bb42c",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "ab25bacaf054009c971094caf46beeaba33a31949a5577b7d6e5253c36dba22a",
+      "repeat": 1
+    },
+    "events": [
+      {
+        "seq": 1753,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:46:59.222899+00:00"
+      },
+      {
+        "seq": 1754,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:46:59.223165+00:00"
+      },
+      {
+        "seq": 1755,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 569,
+          "tokens_out": 22,
+          "duration_ns": 533065209,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:46:59.968400+00:00"
+      },
+      {
+        "seq": 1756,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:46:59.971062+00:00"
+      },
+      {
+        "seq": 1757,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "query_metrics",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:46:59.973553+00:00"
+      },
+      {
+        "seq": 1758,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:46:59.974513+00:00"
+      },
+      {
+        "seq": 1759,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "query_metrics",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:46:59.976164+00:00"
+      },
+      {
+        "seq": 1760,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 641,
+          "tokens_out": 22,
+          "duration_ns": 640054917,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:47:00.627309+00:00"
+      },
+      {
+        "seq": 1761,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 690,
+          "tokens_out": 21,
+          "duration_ns": 595562791,
+          "tool_names": [
+            "query_logs"
+          ]
+        },
+        "at": "2026-09-09T19:47:01.232808+00:00"
+      },
+      {
+        "seq": 1762,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_logs",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:47:01.234119+00:00"
+      },
+      {
+        "seq": 1763,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "query_logs",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:47:01.235661+00:00"
+      },
+      {
+        "seq": 1764,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_logs",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:47:01.236281+00:00"
+      },
+      {
+        "seq": 1765,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "query_logs",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:47:01.237701+00:00"
+      },
+      {
+        "seq": 1766,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 762,
+          "tokens_out": 22,
+          "duration_ns": 663777292,
+          "tool_names": [
+            "query_logs"
+          ]
+        },
+        "at": "2026-09-09T19:47:01.908132+00:00"
+      },
+      {
+        "seq": 1767,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 5,
+          "tokens_in": 811,
+          "tokens_out": 21,
+          "duration_ns": 628167250,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:47:02.543030+00:00"
+      },
+      {
+        "seq": 1768,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:47:02.544034+00:00"
+      },
+      {
+        "seq": 1769,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "get_service_health",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:47:02.545515+00:00"
+      },
+      {
+        "seq": 1770,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:47:02.546016+00:00"
+      },
+      {
+        "seq": 1771,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "tool_error",
+        "payload": {
+          "name": "get_service_health",
+          "error": "MCP tool failed: [TextContent(type='text', text='Unknown or cross-run tool arguments rejected', annotations=None, meta=None)]"
+        },
+        "at": "2026-09-09T19:47:02.547122+00:00"
+      },
+      {
+        "seq": 1772,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "model_result",
+        "payload": {
+          "turn": 6,
+          "tokens_in": 883,
+          "tokens_out": 95,
+          "duration_ns": 2263137125,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:47:04.817981+00:00"
+      },
+      {
+        "seq": 1773,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "proposal",
+        "payload": {
+          "id": "e6032121-735b-4c72-b80f-15494b6b6cb5",
+          "revision": 0,
+          "parameters": {},
+          "diagnosis": "insufficient_evidence",
+          "action": "none",
+          "target": "none",
+          "summary": "Unable to retrieve metrics, logs, or service health data for order-processing errors. Tools are unavailable or returning errors.",
+          "evidence_ids": [],
+          "uncertainty": "Critical data sources are inaccessible, preventing a definitive diagnosis.",
+          "expected_effect": "No action taken due to lack of evidence."
+        },
+        "at": "2026-09-09T19:47:04.819915+00:00"
+      },
+      {
+        "seq": 1774,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "inconclusive",
+        "payload": {
+          "reason": "Agent abstained"
+        },
+        "at": "2026-09-09T19:47:04.819936+00:00"
+      },
+      {
+        "seq": 1775,
+        "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 5.632020125000054
+        },
+        "at": "2026-09-09T19:47:04.855324+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "b568f1b6-69b4-48fd-85b0-3664468f5132",
+    "case_id": "9a21123e52",
+    "split": "development",
+    "variant": "transient_timeout",
+    "family": "upstream_outage",
+    "correct": false,
+    "diagnosis_correct": false,
+    "action_correct": false,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "inconclusive",
+    "expected_outcome": "degraded",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": true,
+    "appropriate_abstention": false,
+    "tool_calls": 6,
+    "tool_errors": 6,
+    "tokens_in": 4356,
+    "tokens_out": 203,
+    "seconds": 5.63,
+    "state": "inconclusive",
+    "repeat": 1,
+    "mode": "agent"
+  }
+}

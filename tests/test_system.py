@@ -334,3 +334,25 @@ def test_wrong_action_does_not_recover(db):
     approve(rid, {"proposal_id": pid, "revision": 0, "decision": "approve"}, db)
     health = read_tool(rid, "get_service_health", {}, db)
     assert health["status"] == "unhealthy" and health["metrics"]["error_rate_pct"] == 28
+
+
+def test_evaluator_does_not_credit_metrics_for_wrong_cause(db):
+    from incident_lab.evaluate import grade
+
+    rid, pid, p = prepared(db)
+    with store.transaction(db) as c:
+        store.emit(
+            c,
+            rid,
+            "tool_result",
+            {"name": "query_metrics", "result": read_tool(rid, "query_metrics", {}, db)},
+        )
+    run = store.get(rid, db)
+    run["proposal"] = p | {
+        "diagnosis": "connection_exhaustion",
+        "action": "restore_worker_concurrency",
+        "target": "orders-worker",
+        "evidence_ids": ["metric-r0"],
+    }
+    score = grade(run)
+    assert score["citations_exist"] and not score["evidence_support"] and score["unsupported_claim"]

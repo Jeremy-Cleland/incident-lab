@@ -1,0 +1,442 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+    "case_id": "d97ba878cb",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "6a4db7d7-db90-40ed-a84c-f6378f6600c0",
+    "proposal": {
+      "diagnosis": "bad_deployment",
+      "action": "rollback_release",
+      "target": "orders-api",
+      "summary": "The error rate spiked to 28% after the deployment of release 2026.09.2, which introduced a TypeError in the parseOrder function. This is confirmed by logs and the health status of the service.",
+      "evidence_ids": [
+        "metric-r0",
+        "change-001",
+        "health-r0",
+        "log-001"
+      ],
+      "uncertainty": "No further evidence is available to confirm the exact impact of the deployment on other systems.",
+      "expected_effect": "Rolling back the release should resolve the TypeError and reduce the error rate."
+    },
+    "outcome": "healthy",
+    "executions": 1,
+    "created_at": "2026-09-09T19:44:38.120405+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "source_commit": "ad2ecbbcb61e02eea885c2325c314b1ad08720eb",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "ab25bacaf054009c971094caf46beeaba33a31949a5577b7d6e5253c36dba22a",
+      "repeat": 3
+    },
+    "events": [
+      {
+        "seq": 1253,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:44:38.120546+00:00"
+      },
+      {
+        "seq": 1254,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:44:38.120849+00:00"
+      },
+      {
+        "seq": 1255,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 569,
+          "tokens_out": 22,
+          "duration_ns": 562369125,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:44:38.905562+00:00"
+      },
+      {
+        "seq": 1256,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:44:38.908422+00:00"
+      },
+      {
+        "seq": 1257,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 35,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 8,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:44:38.915379+00:00"
+      },
+      {
+        "seq": 1258,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 707,
+          "tokens_out": 20,
+          "duration_ns": 692316333,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T19:44:39.614012+00:00"
+      },
+      {
+        "seq": 1259,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {
+            "query": "order-processing"
+          }
+        },
+        "at": "2026-09-09T19:44:39.615072+00:00"
+      },
+      {
+        "seq": 1260,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "API release 2026.09.1 -> 2026.09.2 at 10:00 UTC; error spike at 10:02 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:44:39.617231+00:00"
+      },
+      {
+        "seq": 1261,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 801,
+          "tokens_out": 21,
+          "duration_ns": 691847292,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:44:40.314612+00:00"
+      },
+      {
+        "seq": 1262,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:44:40.315678+00:00"
+      },
+      {
+        "seq": 1263,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:44:40.317827+00:00"
+      },
+      {
+        "seq": 1264,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 937,
+          "tokens_out": 21,
+          "duration_ns": 734450042,
+          "tool_names": [
+            "query_logs"
+          ]
+        },
+        "at": "2026-09-09T19:44:41.058793+00:00"
+      },
+      {
+        "seq": 1265,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_logs",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:44:41.061818+00:00"
+      },
+      {
+        "seq": 1266,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_logs",
+          "result": {
+            "items": [
+              {
+                "id": "log-noise",
+                "text": "10:01 UTC: health probe still passing; telemetry pipeline reports a four-minute delivery delay.",
+                "time": "2026-09-01T10:01:00Z"
+              },
+              {
+                "id": "log-001",
+                "text": "Event time 10:02 UTC, received 10:06 UTC: orders-api: TypeError in parseOrder introduced in release 2026.09.2. Prior release 2026.09.1 has no matching errors.",
+                "time": "2026-09-01T10:02:00Z"
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:44:41.064336+00:00"
+      },
+      {
+        "seq": 1267,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "turn": 5,
+          "tokens_in": 1128,
+          "tokens_out": 156,
+          "duration_ns": 3923295833,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:44:44.993312+00:00"
+      },
+      {
+        "seq": 1268,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "proposal",
+        "payload": {
+          "id": "6a4db7d7-db90-40ed-a84c-f6378f6600c0",
+          "revision": 0,
+          "parameters": {
+            "release": "2026.09.1"
+          },
+          "diagnosis": "bad_deployment",
+          "action": "rollback_release",
+          "target": "orders-api",
+          "summary": "The error rate spiked to 28% after the deployment of release 2026.09.2, which introduced a TypeError in the parseOrder function. This is confirmed by logs and the health status of the service.",
+          "evidence_ids": [
+            "metric-r0",
+            "change-001",
+            "health-r0",
+            "log-001"
+          ],
+          "uncertainty": "No further evidence is available to confirm the exact impact of the deployment on other systems.",
+          "expected_effect": "Rolling back the release should resolve the TypeError and reduce the error rate."
+        },
+        "at": "2026-09-09T19:44:44.994498+00:00"
+      },
+      {
+        "seq": 1269,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 6.913577124998483
+        },
+        "at": "2026-09-09T19:44:45.034621+00:00"
+      },
+      {
+        "seq": 1270,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "6a4db7d7-db90-40ed-a84c-f6378f6600c0",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:44:45.035433+00:00"
+      },
+      {
+        "seq": 1271,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "executing",
+        "payload": {
+          "action": "rollback_release",
+          "target": "orders-api",
+          "parameters": {
+            "release": "2026.09.1"
+          }
+        },
+        "at": "2026-09-09T19:44:45.035461+00:00"
+      },
+      {
+        "seq": 1272,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:44:45.035652+00:00"
+      },
+      {
+        "seq": 1273,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:44:45.249915+00:00"
+      },
+      {
+        "seq": 1274,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "healthy",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.1"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:44:45.254107+00:00"
+      },
+      {
+        "seq": 1275,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 320,
+          "tokens_out": 70,
+          "duration_ns": 1657106167
+        },
+        "at": "2026-09-09T19:44:46.919037+00:00"
+      },
+      {
+        "seq": 1276,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "completed",
+        "payload": {
+          "observed_status": "healthy",
+          "evidence_id": "health-r1",
+          "agent_summary": "The synthetic observation indicates the service is now healthy with an error rate of 0.2% and stable metrics. The rollback to release 2026.09.1 appears to have resolved the TypeError and restored normal operation. Remaining limitations include uncertainty about the impact on other systems and the lack of further evidence to confirm full recovery.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:44:46.919950+00:00"
+      },
+      {
+        "seq": 1277,
+        "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 1.9271477919992321
+        },
+        "at": "2026-09-09T19:44:46.963365+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "19c595a7-b193-4fb9-b468-7eb54760bc41",
+    "case_id": "d97ba878cb",
+    "split": "held_out",
+    "variant": "delayed_signal",
+    "family": "bad_deployment",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "healthy",
+    "expected_outcome": "healthy",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 5,
+    "tool_errors": 0,
+    "tokens_in": 4462,
+    "tokens_out": 310,
+    "seconds": 8.84,
+    "state": "completed",
+    "repeat": 3,
+    "mode": "agent"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "development-agent": {
+    "count": 12,
+    "correct": 11,
+    "evidence_exists": 12,
+    "supported_task_claim": 11,
+    "unsupported_task_claim_proxy": 1,
+    "appropriate_abstentions": 0,
+    "unapproved_executions": 0,
+    "duplicate_executions": 0,
+    "false_verified_recovery": 0,
+    "mean_tool_calls": 5,
+    "tool_errors": 0,
+    "median_active_seconds": 8.23,
+    "mean_active_seconds": 8.45,
+    "input_tokens": 57009,
+    "output_tokens": 3720,
+    "observed_outcomes": {
+      "healthy": 7,
+      "unhealthy": 1,
+      "degraded": 4
+    }
+  },
+  "held_out-agent": {
+    "count": 54,
+    "correct": 51,
+    "evidence_exists": 54,
+    "supported_task_claim": 51,
+    "unsupported_task_claim_proxy": 3,
+    "appropriate_abstentions": 9,
+    "unapproved_executions": 0,
+    "duplicate_executions": 0,
+    "false_verified_recovery": 0,
+    "mean_tool_calls": 4.83,
+    "tool_errors": 0,
+    "median_active_seconds": 8.29,
+    "mean_active_seconds": 7.88,
+    "input_tokens": 248858,
+    "output_tokens": 15729,
+    "observed_outcomes": {
+      "healthy": 27,
+      "inconclusive": 9,
+      "unhealthy": 3,
+      "degraded": 15
+    }
+  },
+  "held_out-baseline": {
+    "count": 54,
+    "correct": 52,
+    "evidence_exists": 54,
+    "supported_task_claim": 52,
+    "unsupported_task_claim_proxy": 2,
+    "appropriate_abstentions": 9,
+    "unapproved_executions": 0,
+    "duplicate_executions": 0,
+    "false_verified_recovery": 0,
+    "mean_tool_calls": 5.96,
+    "tool_errors": 18,
+    "median_active_seconds": 6.04,
+    "mean_active_seconds": 5.85,
+    "input_tokens": 64093,
+    "output_tokens": 11986,
+    "observed_outcomes": {
+      "inconclusive": 11,
+      "healthy": 28,
+      "degraded": 15
+    }
+  }
+}

@@ -1,0 +1,433 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+    "case_id": "cbb32da933",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "5f51b7d4-2760-4a10-ae35-fcbe88c741f0",
+    "proposal": {
+      "diagnosis": "bad_deployment",
+      "action": "rollback_release",
+      "target": "orders-api",
+      "summary": "Elevated error rate (28%) and unhealthy service status correlate with the recent API release (2026.09.2). The error spike aligns with the deployment timeline, suggesting a bad deployment.",
+      "evidence_ids": [
+        "metric-r0",
+        "health-r0",
+        "change-001"
+      ],
+      "uncertainty": "No direct stack trace or upstream failure metrics were observed, but the correlation with the release is strong.",
+      "expected_effect": "Rolling back to the previous release (2026.09.1) should restore service health and reduce error rates to below 1%."
+    },
+    "outcome": "healthy",
+    "executions": 1,
+    "created_at": "2026-09-09T19:54:19.126103+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "source_commit": "ed20f10eb3a248e0ec72c2bc04522ed57dbefbc4",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "839f6c3fa6e6cdd0a26b5b14d7b6aa9dd92943f033e7947884f518ff6b739a02",
+      "repeat": 3
+    },
+    "events": [
+      {
+        "seq": 3027,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:54:19.126916+00:00"
+      },
+      {
+        "seq": 3028,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:54:19.127762+00:00"
+      },
+      {
+        "seq": 3029,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 635,
+          "tokens_out": 16,
+          "duration_ns": 479089167,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:54:19.829138+00:00"
+      },
+      {
+        "seq": 3030,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:54:19.830181+00:00"
+      },
+      {
+        "seq": 3031,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 35,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 8,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:54:19.832472+00:00"
+      },
+      {
+        "seq": 3032,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 768,
+          "tokens_out": 17,
+          "duration_ns": 611877542,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:54:20.450363+00:00"
+      },
+      {
+        "seq": 3033,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:54:20.452149+00:00"
+      },
+      {
+        "seq": 3034,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:54:20.454889+00:00"
+      },
+      {
+        "seq": 3035,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 900,
+          "tokens_out": 16,
+          "duration_ns": 584620917,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T19:54:21.046894+00:00"
+      },
+      {
+        "seq": 3036,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:54:21.048522+00:00"
+      },
+      {
+        "seq": 3037,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "API release 2026.09.1 -> 2026.09.2 at 10:00 UTC; error spike at 10:02 UTC. Unrelated dashboard color release at 09:59 UTC; orders traffic unaffected."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:54:21.051140+00:00"
+      },
+      {
+        "seq": 3038,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 1008,
+          "tokens_out": 26,
+          "duration_ns": 724250625,
+          "tool_names": [
+            "search_runbooks"
+          ]
+        },
+        "at": "2026-09-09T19:54:21.783154+00:00"
+      },
+      {
+        "seq": 3039,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_call",
+        "payload": {
+          "name": "search_runbooks",
+          "arguments": {
+            "query": "error rate 28%"
+          }
+        },
+        "at": "2026-09-09T19:54:21.784560+00:00"
+      },
+      {
+        "seq": 3040,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_result",
+        "payload": {
+          "name": "search_runbooks",
+          "result": {
+            "items": [
+              {
+                "id": "runbook-rollback",
+                "body": "Current v2: bad deployment. Correlate API errors with a release and a matching stack trace or deployment timeline. rollback_release targets orders-api and restores 2026.09.1. Verify error rate below 1 percent and latency below 500ms."
+              },
+              {
+                "id": "runbook-archived",
+                "body": "ARCHIVED v1, superseded: restart all workers for every order error. Do not use as current guidance."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:54:21.787894+00:00"
+      },
+      {
+        "seq": 3041,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "turn": 5,
+          "tokens_in": 1159,
+          "tokens_out": 166,
+          "duration_ns": 3727024083,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:54:25.524869+00:00"
+      },
+      {
+        "seq": 3042,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "proposal",
+        "payload": {
+          "id": "5f51b7d4-2760-4a10-ae35-fcbe88c741f0",
+          "revision": 0,
+          "parameters": {
+            "release": "2026.09.1"
+          },
+          "diagnosis": "bad_deployment",
+          "action": "rollback_release",
+          "target": "orders-api",
+          "summary": "Elevated error rate (28%) and unhealthy service status correlate with the recent API release (2026.09.2). The error spike aligns with the deployment timeline, suggesting a bad deployment.",
+          "evidence_ids": [
+            "metric-r0",
+            "health-r0",
+            "change-001"
+          ],
+          "uncertainty": "No direct stack trace or upstream failure metrics were observed, but the correlation with the release is strong.",
+          "expected_effect": "Rolling back to the previous release (2026.09.1) should restore service health and reduce error rates to below 1%."
+        },
+        "at": "2026-09-09T19:54:25.525978+00:00"
+      },
+      {
+        "seq": 3043,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 6.432911541000067
+        },
+        "at": "2026-09-09T19:54:25.560637+00:00"
+      },
+      {
+        "seq": 3044,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "5f51b7d4-2760-4a10-ae35-fcbe88c741f0",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:54:25.561570+00:00"
+      },
+      {
+        "seq": 3045,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "executing",
+        "payload": {
+          "action": "rollback_release",
+          "target": "orders-api",
+          "parameters": {
+            "release": "2026.09.1"
+          }
+        },
+        "at": "2026-09-09T19:54:25.561604+00:00"
+      },
+      {
+        "seq": 3046,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:54:25.561781+00:00"
+      },
+      {
+        "seq": 3047,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:54:25.781695+00:00"
+      },
+      {
+        "seq": 3048,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "healthy",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.1"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:54:25.785453+00:00"
+      },
+      {
+        "seq": 3049,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 330,
+          "tokens_out": 74,
+          "duration_ns": 1816195083
+        },
+        "at": "2026-09-09T19:54:27.608454+00:00"
+      },
+      {
+        "seq": 3050,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "completed",
+        "payload": {
+          "observed_status": "healthy",
+          "evidence_id": "health-r1",
+          "agent_summary": "The service status has transitioned to healthy, and the error rate has dropped to 0.2% following the rollback to release 2026.09.1. The synthetic observation indicates improved metrics, including reduced latency and no upstream errors. However, the recovery is based on a single observation, and further monitoring is needed to confirm sustained stability.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:54:27.609888+00:00"
+      },
+      {
+        "seq": 3051,
+        "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 2.0872865000001184
+        },
+        "at": "2026-09-09T19:54:27.649548+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "94d49785-f721-4afe-b016-60f2bd36f8da",
+    "case_id": "cbb32da933",
+    "split": "held_out",
+    "variant": "stale_and_noise",
+    "family": "bad_deployment",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "healthy",
+    "expected_outcome": "healthy",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 5,
+    "tool_errors": 0,
+    "tokens_in": 4800,
+    "tokens_out": 315,
+    "seconds": 8.52,
+    "state": "completed",
+    "repeat": 3,
+    "mode": "agent"
+  },
+  "grader_version": "1.1"
+}

@@ -17,6 +17,7 @@ for name, title in [
     ("development-agent", "Development · agent"),
     ("held_out-agent", "Held-out · agent"),
     ("held_out-baseline", "Held-out · fixed-packet baseline"),
+    ("supplemental-exposure", "Supplemental · forced log exposure (not benchmark)"),
 ]:
     path = ROOT / "artifacts" / f"{name}.json"
     if not path.exists():
@@ -44,7 +45,7 @@ for name, title in [
         index["recordings"].append(
             {
                 "id": rid,
-                "title": f"{family.capitalize()} · {result['variant'].replace('_', ' ')} · {'baseline' if 'baseline' in name else 'agent'} {result['repeat']}",
+                "title": f"{family.capitalize()} · {result['variant'].replace('_', ' ')} · {'forced exposure' if name == 'supplemental-exposure' else 'baseline' if 'baseline' in name else 'agent'} {result['repeat']}",
                 "family": result["family"],
                 "variant": result["variant"],
                 "file": "/data/" + source.name,
@@ -80,3 +81,8 @@ if held:
 print(
     f"Exported {len(index['recordings'])} genuine local recordings and {len(index['reports'])} completed reports."
 )
+
+allowed = {"index.json"} | {Path(item["file"]).name for item in index["recordings"] + index["reports"]}
+for stale in OUT.glob("*.json"):
+    if stale.name not in allowed:
+        stale.unlink()

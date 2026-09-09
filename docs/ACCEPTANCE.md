@@ -2,7 +2,7 @@
 
 Implementation checks on September 9, 2026:
 
-- Python 3.12 / `uv run pytest -q`: 17 passing tests. Includes actual MCP stdio, scoped arguments, unknown tools, concurrent and duplicate approvals, stale and cross-run approval, rejection, cancellation, execution timeout, retry limits, restart, SSE cursor replay, unavailable provider, incorrect recovery action, degraded outcome, missing verification evidence, and an end-to-end test provider flow.
+- Python 3.12 / `uv run pytest -q`: 18 passing tests. Includes actual MCP stdio, scoped arguments, unknown tools, concurrent and duplicate approvals, stale and cross-run approval, rejection, cancellation, execution timeout, retry limits, restart, SSE cursor replay, unavailable provider, incorrect recovery action, degraded outcome, missing verification evidence, and an end-to-end test provider flow.
 - Ruff import/undefined-name checks and formatter; Vite TypeScript production build.
 - Browser inspection of workspace at 390, 768, and 1440 pixels, dark and light. No horizontal overflow; axe WCAG A/AA checks returned zero violations for these views. Evidence and proposal controls were present during the checks.
 - Keyboard Tab reaches the skip link, Enter moves focus to main; saved theme survives reload; reduced-motion preference recognized.
@@ -16,3 +16,9 @@ Screenshots and browser automation output are under the local `output/playwright
 Warnings: the installed FastAPI/Starlette test adapter emits two deprecation warnings about its test transport. They do not fail the tests. No framework migration was made solely to remove them.
 
 Final model evaluation and production replay verification are recorded in `RESULTS.md` and `RELEASE.md` after those runs finish. A high synthetic score does not establish production reliability.
+
+A browser test using a clearly labeled, intercepted UI fixture verified resume-after-refresh into awaiting approval and submission of the exact proposal ID and revision. The fixture is not exported as a model recording.
+
+Final local acceptance used the actual Ollama model and API, not interception: run `ac8b6169-4d6c-4091-be2d-8e5ca5b83589` resumed after a browser refresh, accepted the proposal once, and completed with healthy fresh observations (25 persisted events, one execution).
+
+The published replay passed rejection playback, failed-action playback (observed unhealthy), all four report downloads, and evaluation table checks (123 result rows, plus three separate rejection recordings). No localhost requests or live controls were present on the public host. The automatically enabled Netlify branding badge was disabled because its injected iframe conflicted with the restrictive CSP.

@@ -4,6 +4,8 @@ An experimental agent that investigates synthetic software incidents, proposes r
 
 **[Public demo](https://jeremy-incident-lab.netlify.app):** recorded local-model runs only. **Local mode:** genuine Ollama inference and MCP tool calls. No production systems or paid inference APIs are connected.
 
+**Measured on 54 held-out repetitions:** agent 51/54 (94.4%), fixed-packet baseline 52/54 (96.3%). The benchmark does not show an accuracy advantage for iterative tool use. [Full results and limitations](docs/RESULTS.md).
+
 The interface shows evidence, decisions, approvals, and observed results. It does not expose raw model reasoning. Every downloadable recording identifies its mode, model digest, inference settings, scenario version, and approval actor.
 
 ## Try it locally
@@ -71,6 +73,8 @@ uv run python scripts/run_evaluation.py --split development
 uv run python scripts/run_evaluation.py --split held_out --repeats 3
 uv run python scripts/run_evaluation.py --split held_out --repeats 3 --baseline
 uv run python scripts/record_rejections.py
+uv run python scripts/check_injection_exposure.py
+uv run python scripts/summarize_results.py
 uv run python scripts/export_replays.py
 ```
 

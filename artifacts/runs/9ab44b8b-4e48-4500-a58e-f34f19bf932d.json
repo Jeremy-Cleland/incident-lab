@@ -1,0 +1,387 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+    "case_id": "1adc86b183",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "67704505-00b0-4bda-b369-ccd734477ef6",
+    "proposal": {
+      "diagnosis": "connection_exhaustion",
+      "action": "restore_worker_concurrency",
+      "target": "orders-worker",
+      "summary": "Elevated order-processing errors correlate with worker concurrency increase and connection pool saturation.",
+      "evidence_ids": [
+        "metric-r0",
+        "change-001",
+        "health-r0"
+      ],
+      "uncertainty": "No direct confirmation of connection exhaustion from upstream services.",
+      "expected_effect": "Reducing worker concurrency should alleviate connection pool pressure and reduce errors."
+    },
+    "outcome": "healthy",
+    "executions": 1,
+    "created_at": "2026-09-09T19:38:08.139640+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "ab25bacaf054009c971094caf46beeaba33a31949a5577b7d6e5253c36dba22a",
+      "repeat": 1
+    },
+    "events": [
+      {
+        "seq": 191,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:38:08.139792+00:00"
+      },
+      {
+        "seq": 192,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:38:08.140138+00:00"
+      },
+      {
+        "seq": 193,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 569,
+          "tokens_out": 22,
+          "duration_ns": 452526709,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:38:08.799530+00:00"
+      },
+      {
+        "seq": 194,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:38:08.801457+00:00"
+      },
+      {
+        "seq": 195,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 100,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 64,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:38:08.805480+00:00"
+      },
+      {
+        "seq": 196,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 709,
+          "tokens_out": 20,
+          "duration_ns": 568984375,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T19:38:09.384340+00:00"
+      },
+      {
+        "seq": 197,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {
+            "query": "order-processing"
+          }
+        },
+        "at": "2026-09-09T19:38:09.386421+00:00"
+      },
+      {
+        "seq": 198,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "Worker concurrency 8 -> 64 at 10:00 UTC; connection pool saturated at 10:02 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:38:09.391008+00:00"
+      },
+      {
+        "seq": 199,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 789,
+          "tokens_out": 21,
+          "duration_ns": 550393750,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:38:09.952416+00:00"
+      },
+      {
+        "seq": 200,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:38:09.954918+00:00"
+      },
+      {
+        "seq": 201,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 100,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 64,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:38:09.962088+00:00"
+      },
+      {
+        "seq": 202,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 927,
+          "tokens_out": 111,
+          "duration_ns": 1844643500,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:38:11.816509+00:00"
+      },
+      {
+        "seq": 203,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "proposal",
+        "payload": {
+          "id": "67704505-00b0-4bda-b369-ccd734477ef6",
+          "revision": 0,
+          "parameters": {
+            "concurrency": 8
+          },
+          "diagnosis": "connection_exhaustion",
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "summary": "Elevated order-processing errors correlate with worker concurrency increase and connection pool saturation.",
+          "evidence_ids": [
+            "metric-r0",
+            "change-001",
+            "health-r0"
+          ],
+          "uncertainty": "No direct confirmation of connection exhaustion from upstream services.",
+          "expected_effect": "Reducing worker concurrency should alleviate connection pool pressure and reduce errors."
+        },
+        "at": "2026-09-09T19:38:11.818161+00:00"
+      },
+      {
+        "seq": 204,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 3.724200958000438
+        },
+        "at": "2026-09-09T19:38:11.864450+00:00"
+      },
+      {
+        "seq": 205,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "67704505-00b0-4bda-b369-ccd734477ef6",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:38:11.865169+00:00"
+      },
+      {
+        "seq": 206,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "executing",
+        "payload": {
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "parameters": {
+            "concurrency": 8
+          }
+        },
+        "at": "2026-09-09T19:38:11.865206+00:00"
+      },
+      {
+        "seq": 207,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:38:11.865410+00:00"
+      },
+      {
+        "seq": 208,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:38:12.058200+00:00"
+      },
+      {
+        "seq": 209,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "healthy",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:38:12.061460+00:00"
+      },
+      {
+        "seq": 210,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 275,
+          "tokens_out": 73,
+          "duration_ns": 1327705667
+        },
+        "at": "2026-09-09T19:38:13.396551+00:00"
+      },
+      {
+        "seq": 211,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "completed",
+        "payload": {
+          "observed_status": "healthy",
+          "evidence_id": "health-r1",
+          "agent_summary": "The synthetic action led to a healthy status with a reduced error rate (0.2%) and lower upstream error percentage (0%). Worker concurrency was decreased to 8, and database connection usage remained well below capacity at 35 out of 100. Remaining limitations include uncertainty about upstream service behavior and the absence of direct confirmation of prior connection exhaustion.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:38:13.397495+00:00"
+      },
+      {
+        "seq": 212,
+        "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 1.5801002499993047
+        },
+        "at": "2026-09-09T19:38:13.446189+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "9ab44b8b-4e48-4500-a58e-f34f19bf932d",
+    "case_id": "1adc86b183",
+    "split": "development",
+    "variant": "transient_timeout",
+    "family": "connection_exhaustion",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "healthy",
+    "expected_outcome": "healthy",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 4,
+    "tool_errors": 0,
+    "tokens_in": 3269,
+    "tokens_out": 247,
+    "seconds": 5.3,
+    "state": "completed",
+    "repeat": 1,
+    "mode": "agent"
+  }
+}

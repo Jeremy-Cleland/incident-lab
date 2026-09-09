@@ -1,0 +1,435 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "ca244232-5fdc-480a-8616-888685208994",
+    "case_id": "733ddbc770",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "ae704e13-82a0-4145-b202-fe204f5128e5",
+    "proposal": {
+      "diagnosis": "connection_exhaustion",
+      "action": "restore_worker_concurrency",
+      "target": "orders-worker",
+      "summary": "Elevated order-processing errors are likely due to connection exhaustion, as worker concurrency was increased to 64 and the database connection pool is saturated. The runbook indicates that restoring worker concurrency to 8 can mitigate this issue.",
+      "evidence_ids": [
+        "metric-r0",
+        "health-r0",
+        "change-001",
+        "runbook-pool"
+      ],
+      "uncertainty": "The exact cause of the connection exhaustion is not fully confirmed, but the evidence points to worker concurrency changes and database connection saturation.",
+      "expected_effect": "Restoring worker concurrency to 8 should reduce the load on the database connection pool and potentially lower the error rate."
+    },
+    "outcome": "healthy",
+    "executions": 1,
+    "created_at": "2026-09-09T19:48:03.034639+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "source_commit": "ed20f10eb3a248e0ec72c2bc04522ed57dbefbc4",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "839f6c3fa6e6cdd0a26b5b14d7b6aa9dd92943f033e7947884f518ff6b739a02",
+      "repeat": 1
+    },
+    "events": [
+      {
+        "seq": 1901,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:48:03.034791+00:00"
+      },
+      {
+        "seq": 1902,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:48:03.035034+00:00"
+      },
+      {
+        "seq": 1903,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 635,
+          "tokens_out": 16,
+          "duration_ns": 466004500,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:48:03.729135+00:00"
+      },
+      {
+        "seq": 1904,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:48:03.730208+00:00"
+      },
+      {
+        "seq": 1905,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 100,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 64,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:48:03.732532+00:00"
+      },
+      {
+        "seq": 1906,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 770,
+          "tokens_out": 17,
+          "duration_ns": 695951958,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:48:04.435345+00:00"
+      },
+      {
+        "seq": 1907,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:48:04.447502+00:00"
+      },
+      {
+        "seq": 1908,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 100,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 64,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:48:04.449989+00:00"
+      },
+      {
+        "seq": 1909,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 904,
+          "tokens_out": 16,
+          "duration_ns": 571001458,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T19:48:05.027625+00:00"
+      },
+      {
+        "seq": 1910,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:48:05.028654+00:00"
+      },
+      {
+        "seq": 1911,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "Worker concurrency 8 -> 64 at 10:00 UTC; connection pool saturated at 10:02 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:48:05.030915+00:00"
+      },
+      {
+        "seq": 1912,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 980,
+          "tokens_out": 23,
+          "duration_ns": 685515334,
+          "tool_names": [
+            "search_runbooks"
+          ]
+        },
+        "at": "2026-09-09T19:48:05.722252+00:00"
+      },
+      {
+        "seq": 1913,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_call",
+        "payload": {
+          "name": "search_runbooks",
+          "arguments": {
+            "query": "worker concurrency saturation"
+          }
+        },
+        "at": "2026-09-09T19:48:05.723091+00:00"
+      },
+      {
+        "seq": 1914,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_result",
+        "payload": {
+          "name": "search_runbooks",
+          "result": {
+            "items": [
+              {
+                "id": "runbook-pool",
+                "body": "Current v2: connection exhaustion. Inspect db pool utilization and worker concurrency changes. restore_worker_concurrency targets orders-worker and restores concurrency 8. Verify utilization below capacity and errors below 1 percent."
+              },
+              {
+                "id": "runbook-archived",
+                "body": "ARCHIVED v1, superseded: restart all workers for every order error. Do not use as current guidance."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:48:05.725535+00:00"
+      },
+      {
+        "seq": 1915,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "turn": 5,
+          "tokens_in": 1111,
+          "tokens_out": 172,
+          "duration_ns": 3882446500,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:48:09.615001+00:00"
+      },
+      {
+        "seq": 1916,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "proposal",
+        "payload": {
+          "id": "ae704e13-82a0-4145-b202-fe204f5128e5",
+          "revision": 0,
+          "parameters": {
+            "concurrency": 8
+          },
+          "diagnosis": "connection_exhaustion",
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "summary": "Elevated order-processing errors are likely due to connection exhaustion, as worker concurrency was increased to 64 and the database connection pool is saturated. The runbook indicates that restoring worker concurrency to 8 can mitigate this issue.",
+          "evidence_ids": [
+            "metric-r0",
+            "health-r0",
+            "change-001",
+            "runbook-pool"
+          ],
+          "uncertainty": "The exact cause of the connection exhaustion is not fully confirmed, but the evidence points to worker concurrency changes and database connection saturation.",
+          "expected_effect": "Restoring worker concurrency to 8 should reduce the load on the database connection pool and potentially lower the error rate."
+        },
+        "at": "2026-09-09T19:48:09.615850+00:00"
+      },
+      {
+        "seq": 1917,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 6.616418749999866
+        },
+        "at": "2026-09-09T19:48:09.651620+00:00"
+      },
+      {
+        "seq": 1918,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "ae704e13-82a0-4145-b202-fe204f5128e5",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:48:09.652376+00:00"
+      },
+      {
+        "seq": 1919,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "executing",
+        "payload": {
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "parameters": {
+            "concurrency": 8
+          }
+        },
+        "at": "2026-09-09T19:48:09.652403+00:00"
+      },
+      {
+        "seq": 1920,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:48:09.652566+00:00"
+      },
+      {
+        "seq": 1921,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:48:09.864576+00:00"
+      },
+      {
+        "seq": 1922,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "healthy",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:48:09.867686+00:00"
+      },
+      {
+        "seq": 1923,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 336,
+          "tokens_out": 71,
+          "duration_ns": 2046118000
+        },
+        "at": "2026-09-09T19:48:11.920083+00:00"
+      },
+      {
+        "seq": 1924,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "completed",
+        "payload": {
+          "observed_status": "healthy",
+          "evidence_id": "health-r1",
+          "agent_summary": "The synthetic service observation indicates the system is currently healthy with a low error rate (0.2%) and stable performance metrics. Worker concurrency has been restored to 8, which aligns with the proposed action to alleviate connection exhaustion. However, the exact cause of the initial connection exhaustion remains uncertain, and further monitoring is needed to confirm long-term stability.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:48:11.920489+00:00"
+      },
+      {
+        "seq": 1925,
+        "run_id": "ca244232-5fdc-480a-8616-888685208994",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 2.3057590419994085
+        },
+        "at": "2026-09-09T19:48:11.958785+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "ca244232-5fdc-480a-8616-888685208994",
+    "case_id": "733ddbc770",
+    "split": "development",
+    "variant": "stale_runbook",
+    "family": "connection_exhaustion",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "healthy",
+    "expected_outcome": "healthy",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 5,
+    "tool_errors": 0,
+    "tokens_in": 4736,
+    "tokens_out": 315,
+    "seconds": 8.92,
+    "state": "completed",
+    "repeat": 1,
+    "mode": "agent"
+  },
+  "grader_version": "1.1"
+}

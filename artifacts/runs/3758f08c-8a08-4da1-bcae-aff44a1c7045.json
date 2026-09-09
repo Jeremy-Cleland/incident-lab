@@ -1,0 +1,412 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+    "case_id": "93cd095f4c",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "af1396e2-1feb-4bbf-9cda-57ab0bf3565d",
+    "proposal": {
+      "diagnosis": "connection_exhaustion",
+      "action": "restore_worker_concurrency",
+      "target": "orders-worker",
+      "summary": "Elevated order-processing errors are linked to connection exhaustion, as evidenced by the worker concurrency increase and pool saturation.",
+      "evidence_ids": [
+        "health-r0",
+        "log-001",
+        "metric-r0",
+        "change-001"
+      ],
+      "uncertainty": "Uncertainty remains about the exact timing of the connection pool saturation and its direct impact on error rates.",
+      "expected_effect": "Restoring worker concurrency to 8 is expected to alleviate connection exhaustion and reduce errors."
+    },
+    "outcome": "healthy",
+    "executions": 1,
+    "created_at": "2026-09-09T19:58:50.634088+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "source_commit": "10bc41d6fbb4c0375e6e935f22c81e28c5a022e6",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "baseline",
+      "prompt_sha256": "839f6c3fa6e6cdd0a26b5b14d7b6aa9dd92943f033e7947884f518ff6b739a02",
+      "repeat": 2
+    },
+    "events": [
+      {
+        "seq": 3991,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:58:50.634243+00:00"
+      },
+      {
+        "seq": 3992,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:58:50.634469+00:00"
+      },
+      {
+        "seq": 3993,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:58:50.847711+00:00"
+      },
+      {
+        "seq": 3994,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 100,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 64,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:58:50.849839+00:00"
+      },
+      {
+        "seq": 3995,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_logs",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:58:50.850832+00:00"
+      },
+      {
+        "seq": 3996,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_logs",
+          "result": {
+            "items": [
+              {
+                "id": "log-noise",
+                "text": "10:01 UTC: health probe still passing; telemetry pipeline reports a four-minute delivery delay.",
+                "time": "2026-09-01T10:01:00Z"
+              },
+              {
+                "id": "log-001",
+                "text": "Event time 10:02 UTC, received 10:06 UTC: orders-worker: acquire connection timeout. Worker concurrency changed from 8 to 64 before pool saturation; API version unchanged.",
+                "time": "2026-09-01T10:02:00Z"
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:58:50.852580+00:00"
+      },
+      {
+        "seq": 3997,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:58:50.853740+00:00"
+      },
+      {
+        "seq": 3998,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 100,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 64,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:58:50.855980+00:00"
+      },
+      {
+        "seq": 3999,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:58:50.857122+00:00"
+      },
+      {
+        "seq": 4000,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "Worker concurrency 8 -> 64 at 10:00 UTC; connection pool saturated at 10:02 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:58:50.859046+00:00"
+      },
+      {
+        "seq": 4001,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "search_runbooks",
+          "arguments": {
+            "query": "deployment connection upstream"
+          }
+        },
+        "at": "2026-09-09T19:58:50.860174+00:00"
+      },
+      {
+        "seq": 4002,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "search_runbooks",
+          "result": {
+            "items": [
+              {
+                "id": "runbook-upstream",
+                "body": "Current v2: upstream outage. Confirm provider failures and healthy local resources. enable_degraded_mode targets upstream-client and queues shipping work. Local API may recover but the provider stays down. Report degraded, not healthy."
+              },
+              {
+                "id": "runbook-rollback",
+                "body": "Current v2: bad deployment. Correlate API errors with a release and a matching stack trace or deployment timeline. rollback_release targets orders-api and restores 2026.09.1. Verify error rate below 1 percent and latency below 500ms."
+              },
+              {
+                "id": "runbook-pool",
+                "body": "Current v2: connection exhaustion. Inspect db pool utilization and worker concurrency changes. restore_worker_concurrency targets orders-worker and restores concurrency 8. Verify utilization below capacity and errors below 1 percent."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:58:50.862224+00:00"
+      },
+      {
+        "seq": 4003,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 999,
+          "tokens_out": 139,
+          "duration_ns": 3383690250,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:58:54.252891+00:00"
+      },
+      {
+        "seq": 4004,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "proposal",
+        "payload": {
+          "id": "af1396e2-1feb-4bbf-9cda-57ab0bf3565d",
+          "revision": 0,
+          "parameters": {
+            "concurrency": 8
+          },
+          "diagnosis": "connection_exhaustion",
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "summary": "Elevated order-processing errors are linked to connection exhaustion, as evidenced by the worker concurrency increase and pool saturation.",
+          "evidence_ids": [
+            "health-r0",
+            "log-001",
+            "metric-r0",
+            "change-001"
+          ],
+          "uncertainty": "Uncertainty remains about the exact timing of the connection pool saturation and its direct impact on error rates.",
+          "expected_effect": "Restoring worker concurrency to 8 is expected to alleviate connection exhaustion and reduce errors."
+        },
+        "at": "2026-09-09T19:58:54.256011+00:00"
+      },
+      {
+        "seq": 4005,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 3.6645341249986814
+        },
+        "at": "2026-09-09T19:58:54.299195+00:00"
+      },
+      {
+        "seq": 4006,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "af1396e2-1feb-4bbf-9cda-57ab0bf3565d",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:58:54.300346+00:00"
+      },
+      {
+        "seq": 4007,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "executing",
+        "payload": {
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "parameters": {
+            "concurrency": 8
+          }
+        },
+        "at": "2026-09-09T19:58:54.300376+00:00"
+      },
+      {
+        "seq": 4008,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:58:54.300595+00:00"
+      },
+      {
+        "seq": 4009,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:58:54.511571+00:00"
+      },
+      {
+        "seq": 4010,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "healthy",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:58:54.514972+00:00"
+      },
+      {
+        "seq": 4011,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 303,
+          "tokens_out": 84,
+          "duration_ns": 1963001417
+        },
+        "at": "2026-09-09T19:58:56.484729+00:00"
+      },
+      {
+        "seq": 4012,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "completed",
+        "payload": {
+          "observed_status": "healthy",
+          "evidence_id": "health-r1",
+          "agent_summary": "The synthetic action restored worker concurrency to 8, resulting in a healthy status with a low error rate of 0.2% and 35 active database connections out of a 100 capacity. The system shows improved performance with p95 latency at 180 ms and no upstream errors. Remaining limitations include uncertainty about the precise timing of connection pool saturation and its direct impact on error rates.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:58:56.485644+00:00"
+      },
+      {
+        "seq": 4013,
+        "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 2.2318483330000163
+        },
+        "at": "2026-09-09T19:58:56.532888+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "3758f08c-8a08-4da1-bcae-aff44a1c7045",
+    "case_id": "93cd095f4c",
+    "split": "held_out",
+    "variant": "delayed_signal",
+    "family": "connection_exhaustion",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "healthy",
+    "expected_outcome": "healthy",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 6,
+    "tool_errors": 0,
+    "tokens_in": 1302,
+    "tokens_out": 223,
+    "seconds": 5.9,
+    "state": "completed",
+    "repeat": 2,
+    "mode": "baseline"
+  },
+  "grader_version": "1.1"
+}

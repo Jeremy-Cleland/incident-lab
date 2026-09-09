@@ -1,0 +1,387 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "evaluation harness",
+  "run": {
+    "id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+    "case_id": "9a21123e52",
+    "state": "completed",
+    "revision": 1,
+    "proposal_id": "924946fa-462c-4f9d-beee-0e87445403e5",
+    "proposal": {
+      "diagnosis": "upstream_outage",
+      "action": "enable_degraded_mode",
+      "target": "upstream-client",
+      "summary": "Elevated order-processing errors are due to a 100% upstream error rate, confirmed by metrics and service health checks. No recent changes to the orders-api or workers were detected.",
+      "evidence_ids": [
+        "metric-r0",
+        "health-r0",
+        "change-001"
+      ],
+      "uncertainty": "No direct evidence of upstream failure cause, but the timing aligns with a provider outage noted in the change log.",
+      "expected_effect": "Enabling degraded mode will allow the system to continue processing orders with reduced functionality while the upstream issue is resolved."
+    },
+    "outcome": "degraded",
+    "executions": 1,
+    "created_at": "2026-09-09T19:38:32.803771+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "machine": "arm64",
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e",
+      "mode": "agent",
+      "prompt_sha256": "ab25bacaf054009c971094caf46beeaba33a31949a5577b7d6e5253c36dba22a",
+      "repeat": 1
+    },
+    "events": [
+      {
+        "seq": 282,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:38:32.803937+00:00"
+      },
+      {
+        "seq": 283,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T19:38:32.804182+00:00"
+      },
+      {
+        "seq": 284,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 569,
+          "tokens_out": 22,
+          "duration_ns": 488326917,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T19:38:33.498174+00:00"
+      },
+      {
+        "seq": 285,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {
+            "query": "order-processing errors"
+          }
+        },
+        "at": "2026-09-09T19:38:33.500156+00:00"
+      },
+      {
+        "seq": 286,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 35,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 100,
+                  "worker_concurrency": 8,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:38:33.504817+00:00"
+      },
+      {
+        "seq": 287,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 709,
+          "tokens_out": 21,
+          "duration_ns": 693399875,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T19:38:34.211098+00:00"
+      },
+      {
+        "seq": 288,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:38:34.214218+00:00"
+      },
+      {
+        "seq": 289,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 100,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T19:38:34.218927+00:00"
+      },
+      {
+        "seq": 290,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 847,
+          "tokens_out": 20,
+          "duration_ns": 680986334,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T19:38:34.910811+00:00"
+      },
+      {
+        "seq": 291,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {
+            "query": "orders-api"
+          }
+        },
+        "at": "2026-09-09T19:38:34.913699+00:00"
+      },
+      {
+        "seq": 292,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "No API or worker changes during the incident window. Provider outage starts at 10:00 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T19:38:34.917793+00:00"
+      },
+      {
+        "seq": 293,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 920,
+          "tokens_out": 157,
+          "duration_ns": 3572496500,
+          "tool_names": []
+        },
+        "at": "2026-09-09T19:38:38.500257+00:00"
+      },
+      {
+        "seq": 294,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "proposal",
+        "payload": {
+          "id": "924946fa-462c-4f9d-beee-0e87445403e5",
+          "revision": 0,
+          "parameters": {
+            "queue_shipping": true
+          },
+          "diagnosis": "upstream_outage",
+          "action": "enable_degraded_mode",
+          "target": "upstream-client",
+          "summary": "Elevated order-processing errors are due to a 100% upstream error rate, confirmed by metrics and service health checks. No recent changes to the orders-api or workers were detected.",
+          "evidence_ids": [
+            "metric-r0",
+            "health-r0",
+            "change-001"
+          ],
+          "uncertainty": "No direct evidence of upstream failure cause, but the timing aligns with a provider outage noted in the change log.",
+          "expected_effect": "Enabling degraded mode will allow the system to continue processing orders with reduced functionality while the upstream issue is resolved."
+        },
+        "at": "2026-09-09T19:38:38.501563+00:00"
+      },
+      {
+        "seq": 295,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 5.743662500000937
+        },
+        "at": "2026-09-09T19:38:38.548038+00:00"
+      },
+      {
+        "seq": 296,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "924946fa-462c-4f9d-beee-0e87445403e5",
+          "revision": 0,
+          "decision": "approve"
+        },
+        "at": "2026-09-09T19:38:38.548704+00:00"
+      },
+      {
+        "seq": 297,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "executing",
+        "payload": {
+          "action": "enable_degraded_mode",
+          "target": "upstream-client",
+          "parameters": {
+            "queue_shipping": true
+          }
+        },
+        "at": "2026-09-09T19:38:38.548732+00:00"
+      },
+      {
+        "seq": 298,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "verifying",
+        "payload": {
+          "revision": 1
+        },
+        "at": "2026-09-09T19:38:38.548938+00:00"
+      },
+      {
+        "seq": 299,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T19:38:38.740391+00:00"
+      },
+      {
+        "seq": 300,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r1",
+            "revision": 1,
+            "status": "degraded",
+            "metrics": {
+              "error_rate_pct": 0.2,
+              "p95_ms": 180,
+              "db_connections": 35,
+              "db_capacity": 100,
+              "upstream_error_pct": 100,
+              "worker_concurrency": 8,
+              "release": "2026.09.2"
+            },
+            "note": "Provider remains unavailable; shipping queued."
+          }
+        },
+        "at": "2026-09-09T19:38:38.743435+00:00"
+      },
+      {
+        "seq": 301,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "model_result",
+        "payload": {
+          "tokens_in": 326,
+          "tokens_out": 67,
+          "duration_ns": 1658849666
+        },
+        "at": "2026-09-09T19:38:40.410988+00:00"
+      },
+      {
+        "seq": 302,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "completed",
+        "payload": {
+          "observed_status": "degraded",
+          "evidence_id": "health-r1",
+          "agent_summary": "The system's status remains degraded with a 100% upstream error rate, but order-processing errors have decreased from 100% to 0.2%. The upstream-client is operating in degraded mode, allowing limited order processing while the upstream issue persists. Remaining limitations include ongoing upstream unavailability and queued shipping operations.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T19:38:40.411958+00:00"
+      },
+      {
+        "seq": 303,
+        "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "verification",
+          "seconds": 1.9159305419998418
+        },
+        "at": "2026-09-09T19:38:40.465490+00:00"
+      }
+    ]
+  },
+  "grade": {
+    "run_id": "cf66cf22-340e-4c96-a722-2ddc29367bfe",
+    "case_id": "9a21123e52",
+    "split": "development",
+    "variant": "transient_timeout",
+    "family": "upstream_outage",
+    "correct": true,
+    "diagnosis_correct": true,
+    "action_correct": true,
+    "citations_exist": true,
+    "evidence_support": true,
+    "outcome": "degraded",
+    "expected_outcome": "degraded",
+    "unapproved_execution": false,
+    "duplicate_execution": false,
+    "false_verified_recovery": false,
+    "unsupported_claim": false,
+    "appropriate_abstention": false,
+    "tool_calls": 4,
+    "tool_errors": 0,
+    "tokens_in": 3371,
+    "tokens_out": 287,
+    "seconds": 7.66,
+    "state": "completed",
+    "repeat": 1,
+    "mode": "agent"
+  }
+}

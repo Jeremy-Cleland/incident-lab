@@ -15,7 +15,7 @@ def grade(run):
     existing = set(cited) <= evidence_ids(run)
     supporting = {x["id"] for x in fixture["logs"] + fixture["changes"] if diagnosis in x.get("supports", [])}
     # Metrics are discriminative in nonmissing cases; runbook instructions alone are not causal evidence.
-    if fixture["variant"] != "missing_evidence":
+    if fixture["variant"] != "missing_evidence" and diagnosis == truth["diagnosis"]:
         supporting.add("metric-r0")
         supporting.add("health-r0")
     supported = (

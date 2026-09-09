@@ -1,0 +1,321 @@
+{
+  "format_version": "1.0",
+  "mode": "recorded-local-agent",
+  "approval_actor": "rejection recording harness",
+  "title": "Connection exhaustion \u00b7 separate rejected investigation",
+  "family": "connection_exhaustion",
+  "run": {
+    "id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+    "case_id": "399ede8f67",
+    "state": "rejected",
+    "revision": 0,
+    "proposal_id": "bebed646-9e54-432f-8df0-9ec618135548",
+    "proposal": {
+      "diagnosis": "connection_exhaustion",
+      "action": "restore_worker_concurrency",
+      "target": "orders-worker",
+      "summary": "Elevated order-processing errors are likely due to connection exhaustion from increased worker concurrency. The worker concurrency was increased from 8 to 64, and the connection pool became saturated, leading to errors.",
+      "evidence_ids": [
+        "metric-r0",
+        "health-r0",
+        "change-001",
+        "runbook-pool"
+      ],
+      "uncertainty": "Uncertain if the connection pool was fully utilized before the concurrency increase, but the saturation is indicated by the metrics.",
+      "expected_effect": "Restoring worker concurrency to 8 should reduce the load on the connection pool and potentially lower the error rate."
+    },
+    "outcome": null,
+    "executions": 0,
+    "created_at": "2026-09-09T20:01:33.360086+00:00",
+    "metadata": {
+      "provider": "ollama-local",
+      "model": "qwen3:8b",
+      "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "settings": {
+        "temperature": 0.1,
+        "num_ctx": 16384,
+        "num_predict": 1200
+      },
+      "thinking": false,
+      "mode": "agent",
+      "hardware": "macOS-27.0-arm64-arm-64bit",
+      "hardware_model": "Mac16,5",
+      "memory_bytes": 51539607552,
+      "scenario_version": "1.1",
+      "scenario_sha256": "c93a6c8bbabeaeae2ca3bd72dbf820f95d5efb3e3dba66e675d7edee651ed17e"
+    },
+    "events": [
+      {
+        "seq": 20,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "created",
+        "payload": {
+          "brief": "Investigate elevated order-processing errors. Establish the cause from observations, propose a supported recovery, or abstain if evidence is insufficient.",
+          "synthetic": true
+        },
+        "at": "2026-09-09T20:01:33.360278+00:00"
+      },
+      {
+        "seq": 21,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "investigating",
+        "payload": {},
+        "at": "2026-09-09T20:01:33.360591+00:00"
+      },
+      {
+        "seq": 22,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "model_result",
+        "payload": {
+          "turn": 1,
+          "tokens_in": 635,
+          "tokens_out": 16,
+          "duration_ns": 438752500,
+          "tool_names": [
+            "query_metrics"
+          ]
+        },
+        "at": "2026-09-09T20:01:34.017064+00:00"
+      },
+      {
+        "seq": 23,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_call",
+        "payload": {
+          "name": "query_metrics",
+          "arguments": {}
+        },
+        "at": "2026-09-09T20:01:34.019166+00:00"
+      },
+      {
+        "seq": 24,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_result",
+        "payload": {
+          "name": "query_metrics",
+          "result": {
+            "items": [
+              {
+                "id": "metric-r0",
+                "window": "10:00\u201310:05 UTC",
+                "values": {
+                  "error_rate_pct": 28,
+                  "p95_ms": 2100,
+                  "db_connections": 100,
+                  "db_capacity": 100,
+                  "upstream_error_pct": 0,
+                  "worker_concurrency": 64,
+                  "release": "2026.09.2"
+                }
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T20:01:34.022368+00:00"
+      },
+      {
+        "seq": 25,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "model_result",
+        "payload": {
+          "turn": 2,
+          "tokens_in": 770,
+          "tokens_out": 17,
+          "duration_ns": 609358542,
+          "tool_names": [
+            "get_service_health"
+          ]
+        },
+        "at": "2026-09-09T20:01:34.639915+00:00"
+      },
+      {
+        "seq": 26,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_call",
+        "payload": {
+          "name": "get_service_health",
+          "arguments": {}
+        },
+        "at": "2026-09-09T20:01:34.640601+00:00"
+      },
+      {
+        "seq": 27,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_result",
+        "payload": {
+          "name": "get_service_health",
+          "result": {
+            "id": "health-r0",
+            "revision": 0,
+            "status": "unhealthy",
+            "metrics": {
+              "error_rate_pct": 28,
+              "p95_ms": 2100,
+              "db_connections": 100,
+              "db_capacity": 100,
+              "upstream_error_pct": 0,
+              "worker_concurrency": 64,
+              "release": "2026.09.2"
+            },
+            "note": "Synthetic service observation."
+          }
+        },
+        "at": "2026-09-09T20:01:34.643846+00:00"
+      },
+      {
+        "seq": 28,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "model_result",
+        "payload": {
+          "turn": 3,
+          "tokens_in": 904,
+          "tokens_out": 16,
+          "duration_ns": 614388125,
+          "tool_names": [
+            "list_changes"
+          ]
+        },
+        "at": "2026-09-09T20:01:35.264121+00:00"
+      },
+      {
+        "seq": 29,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_call",
+        "payload": {
+          "name": "list_changes",
+          "arguments": {}
+        },
+        "at": "2026-09-09T20:01:35.265192+00:00"
+      },
+      {
+        "seq": 30,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_result",
+        "payload": {
+          "name": "list_changes",
+          "result": {
+            "items": [
+              {
+                "id": "change-001",
+                "text": "Worker concurrency 8 -> 64 at 10:00 UTC; connection pool saturated at 10:02 UTC."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T20:01:35.267126+00:00"
+      },
+      {
+        "seq": 31,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "model_result",
+        "payload": {
+          "turn": 4,
+          "tokens_in": 980,
+          "tokens_out": 23,
+          "duration_ns": 727593000,
+          "tool_names": [
+            "search_runbooks"
+          ]
+        },
+        "at": "2026-09-09T20:01:36.000436+00:00"
+      },
+      {
+        "seq": 32,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_call",
+        "payload": {
+          "name": "search_runbooks",
+          "arguments": {
+            "query": "worker concurrency saturation"
+          }
+        },
+        "at": "2026-09-09T20:01:36.001402+00:00"
+      },
+      {
+        "seq": 33,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "tool_result",
+        "payload": {
+          "name": "search_runbooks",
+          "result": {
+            "items": [
+              {
+                "id": "runbook-pool",
+                "body": "Current v2: connection exhaustion. Inspect db pool utilization and worker concurrency changes. restore_worker_concurrency targets orders-worker and restores concurrency 8. Verify utilization below capacity and errors below 1 percent."
+              }
+            ]
+          }
+        },
+        "at": "2026-09-09T20:01:36.003684+00:00"
+      },
+      {
+        "seq": 34,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "model_result",
+        "payload": {
+          "turn": 5,
+          "tokens_in": 1073,
+          "tokens_out": 164,
+          "duration_ns": 3833040000,
+          "tool_names": []
+        },
+        "at": "2026-09-09T20:01:39.844084+00:00"
+      },
+      {
+        "seq": 35,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "proposal",
+        "payload": {
+          "id": "bebed646-9e54-432f-8df0-9ec618135548",
+          "revision": 0,
+          "parameters": {
+            "concurrency": 8
+          },
+          "diagnosis": "connection_exhaustion",
+          "action": "restore_worker_concurrency",
+          "target": "orders-worker",
+          "summary": "Elevated order-processing errors are likely due to connection exhaustion from increased worker concurrency. The worker concurrency was increased from 8 to 64, and the connection pool became saturated, leading to errors.",
+          "evidence_ids": [
+            "metric-r0",
+            "health-r0",
+            "change-001",
+            "runbook-pool"
+          ],
+          "uncertainty": "Uncertain if the connection pool was fully utilized before the concurrency increase, but the saturation is indicated by the metrics.",
+          "expected_effect": "Restoring worker concurrency to 8 should reduce the load on the connection pool and potentially lower the error rate."
+        },
+        "at": "2026-09-09T20:01:39.845297+00:00"
+      },
+      {
+        "seq": 36,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "phase_finished",
+        "payload": {
+          "phase": "investigation",
+          "seconds": 6.526609583999743
+        },
+        "at": "2026-09-09T20:01:39.887333+00:00"
+      },
+      {
+        "seq": 37,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "approval",
+        "payload": {
+          "proposal_id": "bebed646-9e54-432f-8df0-9ec618135548",
+          "revision": 0,
+          "decision": "reject"
+        },
+        "at": "2026-09-09T20:01:39.888238+00:00"
+      },
+      {
+        "seq": 38,
+        "run_id": "c4a9bd11-5418-4783-bdc4-5e846f60878d",
+        "type": "rejected",
+        "payload": {
+          "reason": "Human rejected proposal"
+        },
+        "at": "2026-09-09T20:01:39.888263+00:00"
+      }
+    ]
+  }
+}
