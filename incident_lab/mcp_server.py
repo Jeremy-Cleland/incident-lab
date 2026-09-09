@@ -8,6 +8,12 @@ from .simulator import read_tool
 
 
 class ScopedMCP(FastMCP):
+    async def list_tools(self):
+        tools = await super().list_tools()
+        for tool in tools:
+            tool.inputSchema["additionalProperties"] = False
+        return tools
+
     async def call_tool(self, name, arguments):
         allowed = {"query"} if name == "search_runbooks" else set()
         if not isinstance(arguments, dict) or set(arguments) - allowed:

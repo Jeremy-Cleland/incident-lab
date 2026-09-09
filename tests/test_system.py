@@ -71,7 +71,9 @@ def test_cancel_and_invalid_action(db):
 async def test_actual_mcp_is_scoped_and_read_only(db):
     rid = store.create(store.cases()[0]["id"], path=db)
     async with session(rid, db) as client:
-        names = {t.name for t in (await client.list_tools()).tools}
+        listed = (await client.list_tools()).tools
+        assert all(t.inputSchema["additionalProperties"] is False for t in listed)
+        names = {t.name for t in listed}
         assert names == {
             "get_service_health",
             "query_logs",
