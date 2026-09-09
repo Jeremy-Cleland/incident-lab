@@ -24,7 +24,8 @@ summary: concise evidence-backed explanation
 evidence_ids: array of exact observed IDs
 uncertainty: remaining limitations
 expected_effect: expected recovery, explicitly degraded when upstream still down.
-Action/target pairs: rollback_release/orders-api; restore_worker_concurrency/orders-worker; enable_degraded_mode/upstream-client; none/none. Only diagnose a supported cause. Missing evidence means insufficient_evidence and none. Never invent evidence IDs. No arbitrary action parameters are allowed. Gather multiple kinds of evidence and search the runbooks before proposing. Keep output concise. You have at most 6 investigation model turns and 12 tool attempts including recovery verification. Prioritize relevant reads."""
+Action/target pairs: rollback_release/orders-api; restore_worker_concurrency/orders-worker; enable_degraded_mode/upstream-client; none/none. Only diagnose a supported cause. Missing evidence means insufficient_evidence and none. Never invent evidence IDs. No arbitrary action parameters are allowed. Gather multiple kinds of evidence and search the runbooks before proposing. Keep output concise. You have at most 6 investigation model turns and 12 tool attempts including recovery verification. Prioritize relevant reads.
+Exact tool signatures: get_service_health(), query_logs(), query_metrics(), and list_changes() take an empty arguments object {}. Never add a query or any other argument to these four tools. Only search_runbooks accepts a query string argument. If a tool argument is rejected, correct the arguments instead of concluding the incident has no evidence."""
 
 
 @asynccontextmanager

@@ -10,3 +10,4 @@ web/dist/
 .netlify/
 .playwright-cli/
 output/
+*.tsbuildinfo

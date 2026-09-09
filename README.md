@@ -2,7 +2,7 @@
 
 An experimental agent that investigates synthetic software incidents, proposes recovery, waits for approval, and checks fresh simulator observations. Built by Jeremy Cleland.
 
-**Public demo:** recorded local-model runs only. **Local mode:** genuine Ollama inference and MCP tool calls. No production systems or paid inference APIs are connected.
+**[Public demo](https://jeremy-incident-lab.netlify.app):** recorded local-model runs only. **Local mode:** genuine Ollama inference and MCP tool calls. No production systems or paid inference APIs are connected.
 
 The interface shows evidence, decisions, approvals, and observed results. It does not expose raw model reasoning. Every downloadable recording identifies its mode, model digest, inference settings, scenario version, and approval actor.
 
