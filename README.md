@@ -8,6 +8,8 @@ An experimental agent that investigates synthetic software incidents, proposes r
 
 The interface shows evidence, decisions, approvals, and observed results. It does not expose raw model reasoning. Every downloadable recording identifies its mode, model digest, inference settings, scenario version, and approval actor.
 
+[Watch the recorded replay walkthrough](https://jeremy-incident-lab.netlify.app/media/incident-lab-walkthrough.webm) · [Desktop screenshot](docs/images/workspace-desktop.png) · [Mobile screenshot](docs/images/workspace-mobile.png)
+
 ## Try it locally
 
 Prerequisites: Python 3.12 via [uv](https://docs.astral.sh/uv/), Node.js 22/npm, and [Ollama](https://ollama.com/). The model download is approximately 5.2 GB; runtime memory requirements are higher.

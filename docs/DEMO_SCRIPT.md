@@ -1,5 +1,7 @@
 # Three-minute interview demonstration
 
+[Recorded visual walkthrough](https://jeremy-incident-lab.netlify.app/media/incident-lab-walkthrough.webm) — shows replay playback, not live inference.
+
 1. **0:00–0:30 — Establish scope.** “This is a recorded run of a local Qwen3 agent against a synthetic order-processing service. The tools and model calls actually ran; playback does not invoke a model.” Select a bad-deployment recording.
 2. **0:30–1:15 — Follow the evidence.** Play the timeline, open a log or change-history result, and identify the stable evidence IDs. Explain that the model requests tools through a real MCP stdio session. Ground-truth labels stay outside its context.
 3. **1:15–1:45 — Show the boundary.** At the proposal, explain target, fixed parameters, uncertainty, and evidence. The read-only MCP server cannot execute. Approval is tied to the exact proposal and revision; an application transaction applies the simulator action once. Select the recorded approval.
