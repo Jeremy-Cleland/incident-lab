@@ -1,0 +1,89 @@
+name: Dependabot guarded auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dependabot-automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  enable-auto-merge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.repository == 'Jeremy-Cleland/incident-lab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # No checkout or execution of pull-request code with this write token.
+      - name: Verify Dependabot metadata and signed commits
+        id: metadata
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply the patch-update policy
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          DEPENDENCIES: ${{ steps.metadata.outputs.updated-dependencies-json }}
+        with:
+          script: |
+            const expectedChecks = ["verify"];
+            const allowedFiles = new Set(["web/package.json", "web/package-lock.json", "pyproject.toml", "uv.lock"]);
+            const allowedPackages = new Set([
+              'prettier', 'eslint', 'vitest', '@vitest/mocker',
+              '@types/node', '@types/react', '@types/react-dom',
+              'pytest', 'pytest-asyncio', 'ruff'
+            ]);
+            const dependencies = JSON.parse(process.env.DEPENDENCIES || '[]');
+            const semver = value => /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.exec(value || '');
+            // Fail closed on groups, pre-releases, unknown metadata, and runtime dependencies.
+            if (dependencies.length !== 1) return;
+            const dep = dependencies[0];
+            const before = semver(dep.prevVersion);
+            const after = semver(dep.newVersion);
+            if (!allowedPackages.has(dep.dependencyName) ||
+                dep.dependencyType !== 'direct:development' ||
+                dep.updateType !== 'version-update:semver-patch' ||
+                dep.maintainerChanges !== false ||
+                !before || !after || before[1] === '0' ||
+                before[1] !== after[1] || before[2] !== after[2] ||
+                Number(after[3]) <= Number(before[3])) return;
+            const {owner, repo} = context.repo;
+            const pull_number = context.payload.pull_request.number;
+            const {data: pr} = await github.rest.pulls.get({owner, repo, pull_number});
+            if (pr.state !== 'open' || pr.draft || pr.user.login !== 'dependabot[bot]' ||
+                pr.head.repo?.full_name !== context.payload.repository.full_name ||
+                pr.base.ref !== 'main' ||
+                pr.head.sha !== context.payload.pull_request.head.sha) return;
+            const files = await github.paginate(github.rest.pulls.listFiles, {owner, repo, pull_number, per_page: 100});
+            if (!files.length || files.some(file => file.status !== 'modified' || !allowedFiles.has(file.filename))) return;
+            // Confirm server-enforced checks still exist before enabling auto-merge.
+            // If protection is removed later, a new event cannot silently enable merging.
+            const {data: rules} = await github.request('GET /repos/{owner}/{repo}/rules/branches/{branch}', {
+              owner, repo, branch: pr.base.ref
+            });
+            const checks = rules.filter(rule => rule.type === 'required_status_checks')
+              .flatMap(rule => rule.parameters.required_status_checks);
+            if (!expectedChecks.every(name => checks.some(check =>
+              check.context === name && check.integration_id === 15368))) {
+              core.setFailed('Required GitHub Actions checks are missing; automatic merging is disabled.');
+              return;
+            }
+            if (!rules.some(rule => rule.type === 'pull_request')) {
+              core.setFailed('The pull request requirement is missing; automatic merging is disabled.');
+              return;
+            }
+            // This requests auto-merge. It neither approves the PR nor bypasses required checks.
+            await github.graphql(`mutation($id: ID!) {
+              enablePullRequestAutoMerge(input: {pullRequestId: $id, mergeMethod: SQUASH}) {
+                pullRequest { number }
+              }
+            }`, {id: pr.node_id});
+            core.info('Auto-merge enabled for an allowlisted development-tool patch.');
