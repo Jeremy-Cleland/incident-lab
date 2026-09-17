@@ -22,68 +22,68 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      # No checkout or execution of pull-request code with this write token.
+      # Never check out PR code with this write token.
       - name: Verify Dependabot metadata and signed commits
         id: metadata
-        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Apply the patch-update policy
+      - name: Enable auto-merge after required checks
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           DEPENDENCIES: ${{ steps.metadata.outputs.updated-dependencies-json }}
         with:
           script: |
             const expectedChecks = ["verify"];
-            const allowedFiles = new Set(["web/package.json", "web/package-lock.json", "pyproject.toml", "uv.lock"]);
-            const allowedPackages = new Set([
-              'prettier', 'eslint', 'vitest', '@vitest/mocker',
-              '@types/node', '@types/react', '@types/react-dom',
-              'pytest', 'pytest-asyncio', 'ruff'
-            ]);
-            const dependencies = JSON.parse(process.env.DEPENDENCIES || '[]');
-            const semver = value => /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.exec(value || '');
-            // Fail closed on groups, pre-releases, unknown metadata, and runtime dependencies.
-            if (dependencies.length !== 1) return;
-            const dep = dependencies[0];
-            const before = semver(dep.prevVersion);
-            const after = semver(dep.newVersion);
-            if (!allowedPackages.has(dep.dependencyName) ||
-                dep.dependencyType !== 'direct:development' ||
-                dep.updateType !== 'version-update:semver-patch' ||
-                dep.maintainerChanges !== false ||
-                !before || !after || before[1] === '0' ||
-                before[1] !== after[1] || before[2] !== after[2] ||
-                Number(after[3]) <= Number(before[3])) return;
+            const allowedFiles = new Set(["pyproject.toml", "uv.lock", "web/package-lock.json", "web/package.json"]);
             const {owner, repo} = context.repo;
             const pull_number = context.payload.pull_request.number;
+            const snapshot = context.payload.pull_request.head.sha;
+            const dependencies = JSON.parse(process.env.DEPENDENCIES || '[]');
+            // fetch-metadata verifies the author and signatures of every commit. A group is
+            // eligible only when every dependency has a known, non-major update type.
+            if (!Array.isArray(dependencies) || !dependencies.length || dependencies.some(dep =>
+              !['version-update:semver-patch', 'version-update:semver-minor'].includes(dep.updateType) ||
+              dep.maintainerChanges !== false ||
+              !['npm_and_yarn', 'npm', 'pip', 'uv'].includes(dep.packageEcosystem) ||
+              [dep.prevVersion, dep.newVersion].some(v => v && !/^v?\d+(?:\.\d+){0,3}$/.test(v)) ||
+              (dep.updateType === 'version-update:semver-minor' && /^v?0\./.test(dep.prevVersion || ''))
+            )) {
+              core.info('Manual review: major, pre-release, pre-1.0 minor, unsupported, or unknown update.');
+              return;
+            }
             const {data: pr} = await github.rest.pulls.get({owner, repo, pull_number});
             if (pr.state !== 'open' || pr.draft || pr.user.login !== 'dependabot[bot]' ||
                 pr.head.repo?.full_name !== context.payload.repository.full_name ||
-                pr.base.ref !== 'main' ||
-                pr.head.sha !== context.payload.pull_request.head.sha) return;
+                pr.base.ref !== context.payload.repository.default_branch || pr.head.sha !== snapshot) return;
             const files = await github.paginate(github.rest.pulls.listFiles, {owner, repo, pull_number, per_page: 100});
-            if (!files.length || files.some(file => file.status !== 'modified' || !allowedFiles.has(file.filename))) return;
-            // Confirm server-enforced checks still exist before enabling auto-merge.
-            // If protection is removed later, a new event cannot silently enable merging.
+            if (!files.length || files.some(file => file.status !== 'modified' || !allowedFiles.has(file.filename))) {
+              core.info('Manual review: changes extend beyond the approved dependency manifests and lockfiles.');
+              return;
+            }
+            // Server-side protection must remain present. This job never approves or merges
+            // directly, and it never checks out or executes pull-request code.
             const {data: rules} = await github.request('GET /repos/{owner}/{repo}/rules/branches/{branch}', {
               owner, repo, branch: pr.base.ref
             });
-            const checks = rules.filter(rule => rule.type === 'required_status_checks')
-              .flatMap(rule => rule.parameters.required_status_checks);
-            if (!expectedChecks.every(name => checks.some(check =>
-              check.context === name && check.integration_id === 15368))) {
-              core.setFailed('Required GitHub Actions checks are missing; automatic merging is disabled.');
+            const checkRules = rules.filter(rule => rule.type === 'required_status_checks');
+            const checks = checkRules.flatMap(rule => rule.parameters.required_status_checks);
+            if (!expectedChecks.length || !expectedChecks.every(name => checks.some(check =>
+                  check.context === name && check.integration_id === 15368)) ||
+                !checkRules.some(rule => rule.parameters.strict_required_status_checks_policy === true) ||
+                !rules.some(rule => rule.type === 'pull_request')) {
+              core.setFailed('Required GitHub Actions checks or pull-request protection are missing.');
               return;
             }
-            if (!rules.some(rule => rule.type === 'pull_request')) {
-              core.setFailed('The pull request requirement is missing; automatic merging is disabled.');
+            const {data: latest} = await github.rest.pulls.get({owner, repo, pull_number});
+            if (latest.head.sha !== snapshot || latest.state !== 'open') return;
+            if (latest.auto_merge) {
+              core.info('Auto-merge is already enabled.');
               return;
             }
-            // This requests auto-merge. It neither approves the PR nor bypasses required checks.
             await github.graphql(`mutation($id: ID!) {
               enablePullRequestAutoMerge(input: {pullRequestId: $id, mergeMethod: SQUASH}) {
                 pullRequest { number }
               }
             }`, {id: pr.node_id});
-            core.info('Auto-merge enabled for an allowlisted development-tool patch.');
+            core.info('Auto-merge enabled; GitHub will wait for the required checks and branch rules.');
